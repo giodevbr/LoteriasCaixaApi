@@ -2,14 +2,14 @@
 
 namespace Loterias.Infra.Data.Rest.Caixa.Dtos
 {
-    public class LotofacilDto
+    public class LotoFacilDto
     {
-        public LotofacilDto()
+        public LotoFacilDto()
         {
             Resultado = new List<int>();
         }
 
-        public LotofacilDto(string concurso, DateTime dataSorteio, List<int> resultado, List<LotofacilMunicipioDto> municipio,
+        public LotoFacilDto(string concurso, DateTime dataSorteio, List<int> resultado, List<LotoFacilMunicipioDto> municipio,
             int quantidadeGanhadoresQuinzePontos, decimal valorPagoQuinzePontos, int quantidadeGanhadoresQuatorzePontos,
             decimal valorPagoQuatorzePontos, int quantidadeGanhadoresTrezePontos, decimal valorPagoTrezePontos, int quantidadeGanhadoresOnzePontos,
             decimal valorPagoOnzePontos, decimal valorArrecadado, decimal valorAcumulado, decimal valorSorteado)
@@ -35,7 +35,7 @@ namespace Loterias.Infra.Data.Rest.Caixa.Dtos
         public DateTime DataSorteio { get; set; }
         public StatusDoConcurso StatusDoConcurso { get; set; }
         public List<int> Resultado { get; set; }
-        public List<LotofacilMunicipioDto> Municipio { get; set; }
+        public List<LotoFacilMunicipioDto> Municipio { get; set; }
         public int QuantidadeGanhadoresQuinzePontos { get; set; }
         public Decimal ValorPagoQuinzePontos { get; set; }
         public int QuantidadeGanhadoresQuatorzePontos { get; set; }
