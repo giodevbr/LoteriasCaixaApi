@@ -7,6 +7,7 @@ namespace Loterias.Infra.Data.Rest.Caixa.Dtos
         public LotoFacilDto()
         {
             Resultado = new List<int>();
+            Municipio = new List<LotoFacilMunicipioDto>();
         }
 
         public LotoFacilDto(string concurso, DateTime dataSorteio, List<int> resultado, List<LotoFacilMunicipioDto> municipio,

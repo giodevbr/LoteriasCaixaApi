@@ -53,8 +53,8 @@ namespace Loterias.Infra.Data.Rest.Caixa.Services
             var request = new RestRequest(CaixaResources.UrlLotofacil, Method.Get);
             var response = await client.ExecuteAsync(request);
 
-            if (response.StatusCode != HttpStatusCode.OK || 
-                response.Content == string.Empty || 
+            if (response.StatusCode != HttpStatusCode.OK ||
+                response.Content == string.Empty ||
                 response.Content == null)
                 return new List<LotoFacilDto>();
 
@@ -70,7 +70,6 @@ namespace Loterias.Infra.Data.Rest.Caixa.Services
             try
             {
                 var tabelaCaixa = TransformarTabelaHtmlEmArray(retorno);
-
                 foreach (var linha in tabelaCaixa)
                 {
                     var lotofacilDto = new LotoFacilDto();
@@ -79,11 +78,13 @@ namespace Loterias.Infra.Data.Rest.Caixa.Services
                     var totalDeColunas = colunasCaixa.Length;
 
                     PreencherInformacoesDoSorteio(lotofacilDto, colunasCaixa, totalDeColunas);
-                    PreencherValoresPagos(lotofacilDto, colunasCaixa, totalDeColunas);
-                    PreencherGanhadores(lotofacilDto, colunasCaixa, totalDeColunas);
                     PreencherResultados(lotofacilDto, colunasCaixa);
-                    PreencherCidades(lotofacilDto, colunasCaixa);
+                    PreencherGanhadores(lotofacilDto, colunasCaixa, totalDeColunas);
+                    PreencherValoresPagos(lotofacilDto, colunasCaixa, totalDeColunas);
                     PreencherStatus(lotofacilDto);
+
+                    if (lotofacilDto.StatusDoConcurso == StatusDoConcurso.Pago)
+                        PreencherCidades(lotofacilDto, colunasCaixa);
 
                     listaLotoFacil.Add(lotofacilDto);
                 }
@@ -162,10 +163,61 @@ namespace Loterias.Infra.Data.Rest.Caixa.Services
 
         private static void PreencherCidades(LotoFacilDto lotoFacilDto, string[] colunasCaixa)
         {
-            //for (int i = 19; i < (colunas.Length - 12); i++)
-            //{
-            //    //processamento da cidade/uf
-            //}
+            var ufs = new List<string>();
+            var municipios = new List<string>();
+
+            for (int i = 19; i < (colunasCaixa.Length - 12); i++)
+            {
+                var municipioOuUf = colunasCaixa[i].Replace("<td>", "").Replace("\r", "").Trim().ToUpper();
+
+                if (!string.IsNullOrEmpty(municipioOuUf))
+                {
+                    if (municipioOuUf.Length == 2 && municipioOuUf != ComumResources.NomeDeUfInvalido1 && municipioOuUf != ComumResources.NomeDeUfInvalido2)
+                    {
+                        ufs.Add(municipioOuUf);
+
+                        if (ufs.Count > municipios.Count && municipios.Count > 0)
+                        {
+                            municipios.Add(ComumResources.MunicipioNaoInformado);
+                        }
+                    }
+                    else
+                    if (municipioOuUf.Length > 0 && municipioOuUf != ComumResources.CanalEletronico)
+                    {
+                        municipios.Add(municipioOuUf);
+                    }
+                }
+            }
+
+            if (ufs.Count == 0)
+            {
+                lotoFacilDto.Municipio.Add(new LotoFacilMunicipioDto(ComumResources.MunicipioNaoInformado, ComumResources.UfNaoInformado));
+            }
+            else
+            if (ufs.Count == 1)
+            {
+                if (municipios.Count == 1)
+                    lotoFacilDto.Municipio.Add(new LotoFacilMunicipioDto(municipios.First(), ufs.First()));
+
+                lotoFacilDto.Municipio.Add(new LotoFacilMunicipioDto(ComumResources.MunicipioNaoInformado, ufs.First()));
+            }
+            else
+            {
+                if (municipios.Count == 0)
+                {
+                    foreach (var uf in ufs)
+                    {
+                        lotoFacilDto.Municipio.Add(new LotoFacilMunicipioDto(ComumResources.MunicipioNaoInformado, uf));
+                    }
+                }
+                else
+                {
+                    for (int i = 0; i < ufs.Count; i++)
+                    {
+                        lotoFacilDto.Municipio.Add(new LotoFacilMunicipioDto(ufs[i], municipios[i]));
+                    }
+                }
+            }
         }
 
         private static void PreencherStatus(LotoFacilDto lotoFacilDto)
