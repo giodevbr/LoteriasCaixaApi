@@ -49,8 +49,8 @@ namespace Loterias.Infra.Data.Rest.Caixa.Services
 
         private async Task<List<LotoFacilDto>> ConsultarCaixa()
         {
-            var client = new RestClient(CaixaResources.UrlBase);
-            var request = new RestRequest(CaixaResources.UrlLotofacil, Method.Get);
+            var client = new RestClient(StringResources.UrlBaseCaixa);
+            var request = new RestRequest(StringResources.UrlLotofacil, Method.Get);
             var response = await client.ExecuteAsync(request);
 
             if (response.StatusCode != HttpStatusCode.OK ||
@@ -91,7 +91,7 @@ namespace Loterias.Infra.Data.Rest.Caixa.Services
             }
             catch (Exception)
             {
-                _notificacaoDeDominio.AddNotification(new Notification(ComumResources.ErroGenerico));
+                _notificacaoDeDominio.AddNotification(new Notification(StringResources.ErroGenerico));
             }
 
             return listaLotoFacil;
@@ -172,17 +172,17 @@ namespace Loterias.Infra.Data.Rest.Caixa.Services
 
                 if (!string.IsNullOrEmpty(municipioOuUf))
                 {
-                    if (municipioOuUf.Length == 2 && municipioOuUf != ComumResources.NomeDeUfInvalido1 && municipioOuUf != ComumResources.NomeDeUfInvalido2)
+                    if (municipioOuUf.Length == 2 && municipioOuUf != StringResources.NomeDeUfInvalido1 && municipioOuUf != StringResources.NomeDeUfInvalido2)
                     {
                         ufs.Add(municipioOuUf);
 
                         if (ufs.Count > municipios.Count && municipios.Count > 0)
                         {
-                            municipios.Add(ComumResources.MunicipioNaoInformado);
+                            municipios.Add(StringResources.MunicipioNaoInformado);
                         }
                     }
                     else
-                    if (municipioOuUf.Length > 0 && municipioOuUf != ComumResources.CanalEletronico)
+                    if (municipioOuUf.Length > 0 && municipioOuUf != StringResources.CanalEletronico)
                     {
                         municipios.Add(municipioOuUf);
                     }
@@ -191,7 +191,7 @@ namespace Loterias.Infra.Data.Rest.Caixa.Services
 
             if (ufs.Count == 0)
             {
-                lotoFacilDto.Municipio.Add(new LotoFacilMunicipioDto(ComumResources.MunicipioNaoInformado, ComumResources.UfNaoInformado));
+                lotoFacilDto.Municipio.Add(new LotoFacilMunicipioDto(StringResources.MunicipioNaoInformado, StringResources.UfNaoInformado));
             }
             else
             if (ufs.Count == 1)
@@ -199,7 +199,7 @@ namespace Loterias.Infra.Data.Rest.Caixa.Services
                 if (municipios.Count == 1)
                     lotoFacilDto.Municipio.Add(new LotoFacilMunicipioDto(municipios.First(), ufs.First()));
 
-                lotoFacilDto.Municipio.Add(new LotoFacilMunicipioDto(ComumResources.MunicipioNaoInformado, ufs.First()));
+                lotoFacilDto.Municipio.Add(new LotoFacilMunicipioDto(StringResources.MunicipioNaoInformado, ufs.First()));
             }
             else
             {
@@ -207,7 +207,7 @@ namespace Loterias.Infra.Data.Rest.Caixa.Services
                 {
                     foreach (var uf in ufs)
                     {
-                        lotoFacilDto.Municipio.Add(new LotoFacilMunicipioDto(ComumResources.MunicipioNaoInformado, uf));
+                        lotoFacilDto.Municipio.Add(new LotoFacilMunicipioDto(StringResources.MunicipioNaoInformado, uf));
                     }
                 }
                 else
