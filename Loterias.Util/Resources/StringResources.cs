@@ -21,8 +21,6 @@ namespace Loterias.Util.Resources
             return FormatarResource(principal, args.Select(x => x.ToLower()).ToArray());
         }
 
-        public const string UrlBasePortalDeLoteriasCaixa = "https://servicebus2.caixa.gov.br/portaldeloterias/api/resultados";
-
         public const string ErroGenerico = "Não foi possível concluir a exportação dos dados da API da Caixa.";
         public const string MunicipioNaoInformado = "NÃO INFORMADO";
         public const string UfNaoInformado = "NI";
@@ -30,7 +28,6 @@ namespace Loterias.Util.Resources
         public const string NomeDeUfInvalido1 = "--";
         public const string NomeDeUfInvalido2 = "XX";
 
-        public const string UrlBaseIbge = "https://servicodados.ibge.gov.br/api/v1/";
         public const string UrlMunicipioIbge = "localidades/estados/{0}/municipios";
         public const string UrlUfIbge = "localidades/estados";
         public const string FalhaNaComunicacaoComApi = "Não foi possível estabelecer uma comunicação com a API do IBGE.";
