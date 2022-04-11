@@ -25,8 +25,8 @@ namespace Loterias.Infra.Data.Rest.Caixa.Services
 
         public async Task<LotoFacilDto> ConsultarUltimoConcurso()
         {
-            var retorno = await ConsultarCaixa();
-            var concursoRetorno = retorno.LastOrDefault();
+            var retornoCaixa = await ConsultarCaixa();
+            var concursoRetorno = retornoCaixa.Last();
 
             return concursoRetorno;
         }
@@ -34,7 +34,7 @@ namespace Loterias.Infra.Data.Rest.Caixa.Services
         public async Task<LotoFacilDto> ConsultarPorConcurso(string concurso)
         {
             var retorno = await ConsultarCaixa();
-            var concursoRetorno = retorno.Where(c => c.Concurso == concurso).FirstOrDefault();
+            var concursoRetorno = retorno.Where(c => c.Concurso == concurso).First();
 
             return concursoRetorno;
         }
@@ -42,15 +42,18 @@ namespace Loterias.Infra.Data.Rest.Caixa.Services
         public async Task<LotoFacilDto> ConsultarPorDataDoSorteio(DateTime dataDoSorteio)
         {
             var retorno = await ConsultarCaixa();
-            var concursoRetorno = retorno.Where(c => c.DataSorteio == dataDoSorteio).FirstOrDefault();
+            var concursoRetorno = retorno.Where(c => c.DataSorteio == dataDoSorteio).First();
 
             return concursoRetorno;
         }
 
         private async Task<List<LotoFacilDto>> ConsultarCaixa()
         {
-            var client = new RestClient(StringResources.UrlBaseCaixa);
-            var request = new RestRequest(StringResources.UrlLotofacil, Method.Get);
+            var client = new RestClient(StringResources.UrlBasePortalDeLoteriasCaixa);
+
+            var urlCompleta = StringResources.UrlBasePortalDeLoteriasCaixa + "?modalidade=Lotofacil";
+
+            var request = new RestRequest(urlCompleta, Method.Get);
             var response = await client.ExecuteAsync(request);
 
             if (response.StatusCode != HttpStatusCode.OK ||
@@ -70,11 +73,14 @@ namespace Loterias.Infra.Data.Rest.Caixa.Services
             try
             {
                 var tabelaCaixa = TransformarTabelaHtmlEmArray(retorno);
+
                 foreach (var linha in tabelaCaixa)
                 {
                     var lotofacilDto = new LotoFacilDto();
-                    var arrayDeColunas = TransformarLinhaHtmlEmArray(linha);
-                    var colunasCaixa = RemoverLinhasComLixoDoArrayDeColunas(arrayDeColunas);
+                    
+                    var colunasCaixa = TransformarLinhaHtmlEmArray(linha);
+                    colunasCaixa = RemoverTagsHtmlDasColunas(colunasCaixa);
+                    
                     var totalDeColunas = colunasCaixa.Length;
 
                     PreencherInformacoesDoSorteio(lotofacilDto, colunasCaixa, totalDeColunas);
@@ -99,32 +105,40 @@ namespace Loterias.Infra.Data.Rest.Caixa.Services
 
         private static string[] TransformarTabelaHtmlEmArray(string tabelaCaixa)
         {
-            return tabelaCaixa.ToLower()
-                              .Replace("<tr bgcolor=\"#b5ffbd\">", "<tr bgcolor=\"#ffffff\">")
-                              .Split("<tr bgcolor=\"#ffffff\">")
-                              .Where(x => !x.Contains("html"))
-                              .ToArray();
+            var tabelaCaixaComCabecalho = tabelaCaixa.Split("</thead>");
+
+            var tabelaCaixaSemCabecalho = tabelaCaixaComCabecalho[1].ToLower()
+                                                                    .Replace("\\r\\n", "")
+                                                                    .Replace("<tbody><tr><td>1</td>", "<tr><td>1</td>")
+                                                                    .Split("</tr></tbody><tbody>");
+
+            return tabelaCaixaSemCabecalho;
         }
 
         private static string[] TransformarLinhaHtmlEmArray(string linhaTabelaCaixa)
         {
-            return linhaTabelaCaixa.Replace("<td rowspan=\"1\">", "")
-                                   .Replace("</td>", "")
-                                   .Split('\n');
+            return linhaTabelaCaixa.Split("</td><td>");
         }
 
-        private static string[] RemoverLinhasComLixoDoArrayDeColunas(string[] colunasCaixa)
+        private static string[] RemoverTagsHtmlDasColunas(string[] colunasCaixa)
         {
-            return colunasCaixa.Where(c => c != "" &&
-                                                    c != " " &&
-                                                    c != "</tr>" &&
-                                                    c != null &&
-                                                   !c.Contains("<td>\r") &&
-                                                   !c.Contains("<tr>\r") &&
-                                                   !c.Contains("table") &&
-                                                   !c.Contains("cidade"))
-                                                     .ToArray();
-        }
+            for (int i = 0; i < colunasCaixa.Length; i++)
+            {
+                colunasCaixa[i] = colunasCaixa[i].Replace("r$", "");
+                colunasCaixa[i] = colunasCaixa[i].Replace("<td>", "");
+                colunasCaixa[i] = colunasCaixa[i].Replace("<tr>", "");
+                colunasCaixa[i] = colunasCaixa[i].Replace("<table>", "");
+                colunasCaixa[i] = colunasCaixa[i].Replace("<tbody>", "");
+                colunasCaixa[i] = colunasCaixa[i].Replace("</td>", "");
+                colunasCaixa[i] = colunasCaixa[i].Replace("</tr>", "");
+                colunasCaixa[i] = colunasCaixa[i].Replace("</table>", "");
+                colunasCaixa[i] = colunasCaixa[i].Replace("</tbody>", "");
+            }
+
+            colunasCaixa = colunasCaixa.Where(x => x != "").ToArray();
+
+            return colunasCaixa;
+        } 
 
         private static void PreencherInformacoesDoSorteio(LotoFacilDto lotoFacilDto, string[] colunasCaixa, int totalDeColunas)
         {
@@ -168,7 +182,7 @@ namespace Loterias.Infra.Data.Rest.Caixa.Services
 
             for (int i = 19; i < (colunasCaixa.Length - 12); i++)
             {
-                var municipioOuUf = colunasCaixa[i].Replace("<td>", "").Replace("\r", "").Trim().ToUpper();
+                var municipioOuUf = colunasCaixa[i].Trim().ToUpper();
 
                 if (!string.IsNullOrEmpty(municipioOuUf))
                 {
@@ -177,9 +191,7 @@ namespace Loterias.Infra.Data.Rest.Caixa.Services
                         ufs.Add(municipioOuUf);
 
                         if (ufs.Count > municipios.Count && municipios.Count > 0)
-                        {
                             municipios.Add(StringResources.MunicipioNaoInformado);
-                        }
                     }
                     else
                     if (municipioOuUf.Length > 0 && municipioOuUf != StringResources.CanalEletronico)
@@ -190,10 +202,8 @@ namespace Loterias.Infra.Data.Rest.Caixa.Services
             }
 
             if (ufs.Count == 0)
-            {
                 lotoFacilDto.Municipio.Add(new LotoFacilMunicipioDto(StringResources.MunicipioNaoInformado, StringResources.UfNaoInformado));
-            }
-            else
+
             if (ufs.Count == 1)
             {
                 if (municipios.Count == 1)
@@ -204,19 +214,11 @@ namespace Loterias.Infra.Data.Rest.Caixa.Services
             else
             {
                 if (municipios.Count == 0)
-                {
                     foreach (var uf in ufs)
-                    {
                         lotoFacilDto.Municipio.Add(new LotoFacilMunicipioDto(StringResources.MunicipioNaoInformado, uf));
-                    }
-                }
                 else
-                {
                     for (int i = 0; i < ufs.Count; i++)
-                    {
                         lotoFacilDto.Municipio.Add(new LotoFacilMunicipioDto(ufs[i], municipios[i]));
-                    }
-                }
             }
         }
 

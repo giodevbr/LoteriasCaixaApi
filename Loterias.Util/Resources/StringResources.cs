@@ -21,11 +21,7 @@ namespace Loterias.Util.Resources
             return FormatarResource(principal, args.Select(x => x.ToLower()).ToArray());
         }
 
-        public const string UrlBaseCaixa = "http://loterias.caixa.gov.br/";
-        public const string UrlLotofacil = "wps/portal/loterias/landing/lotofacil/!ut/p/a1/04_Sj9CPykssy0xPLMnMz0vMAfGjzOLNDH0MPAzcDbz8vTxNDRy9"
-                                         + "_Y2NQ13CDA0sTIEKIoEKnN0dPUzMfQwMDEwsjAw8XZw8XMwtfQ0MPM2I02-AAzgaENIfrh-FqsQ9wBmoxN_FydLAGAgNTKEK8DkR"
-                                         + "rACPGwpyQyMMMj0VAcySpRM!/dl5/d5/L2dBISEvZ0FBIS9nQSEh/pw/Z7_HGK818G0K85260Q5OIRSC42046/res/id=historico"
-                                         + "HTML/c=cacheLevelPage/=/";
+        public const string UrlBasePortalDeLoteriasCaixa = "https://servicebus2.caixa.gov.br/portaldeloterias/api/resultados";
 
         public const string ErroGenerico = "Não foi possível concluir a exportação dos dados da API da Caixa.";
         public const string MunicipioNaoInformado = "NÃO INFORMADO";

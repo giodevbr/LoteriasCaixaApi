@@ -27,10 +27,13 @@ namespace Loterias.Infra.Data.Rest.Ibge.Services
             if (response.StatusCode != HttpStatusCode.OK)
                 _notificacaoDeDominio.AddNotification(new Notification(StringResources.FalhaNaComunicacaoComApi));
 
-            if (_notificacaoDeDominio.HasNotifications())
+            if (_notificacaoDeDominio.HasNotifications() || response.Content == null)
                 return new List<UfDto>();
 
             var retorno = JsonConvert.DeserializeObject<List<UfDto>>(response.Content);
+
+            if (retorno == null)
+                return new List<UfDto>();
 
             return retorno;
         }
@@ -47,10 +50,13 @@ namespace Loterias.Infra.Data.Rest.Ibge.Services
             if (string.IsNullOrEmpty(response.Content) || response.Content == "[]" && !_notificacaoDeDominio.HasNotifications())
                 _notificacaoDeDominio.AddNotification(new Notification(StringResources.CodigoIbgeDaUfInvalido));
 
-            if (_notificacaoDeDominio.HasNotifications())
+            if (_notificacaoDeDominio.HasNotifications() || response.Content == null) 
                 return new List<MunicipioDto>();
 
             var retorno = JsonConvert.DeserializeObject<List<MunicipioDto>>(response.Content);
+
+            if(retorno == null)
+                return new List<MunicipioDto>();
 
             return retorno;
         }
