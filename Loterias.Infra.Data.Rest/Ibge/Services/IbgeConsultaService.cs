@@ -6,21 +6,26 @@ using Loterias.Util.Resources;
 using Loterias.Core.Interfaces;
 using Loterias.Infra.Data.Rest.Ibge.Dtos;
 using Loterias.Infra.Data.Rest.Ibge.Interfaces;
+using Microsoft.Extensions.Configuration;
 
 namespace Loterias.Infra.Data.Rest.Ibge.Services
 {
     public class IbgeConsultaService : IIbgeConsultaService
     {
         private readonly IDomainNotification _notificacaoDeDominio;
+        private readonly IConfiguration _configuration;
+        private readonly string _urlBaseIbge;
 
-        public IbgeConsultaService(IDomainNotification notificacaoDeDominio)
+        public IbgeConsultaService(IDomainNotification notificacaoDeDominio, IConfiguration configuration)
         {
             _notificacaoDeDominio = notificacaoDeDominio;
+            _configuration = configuration;
+            _urlBaseIbge = _configuration.GetSection("Apis:UrlBaseIbge").Value;
         }
 
         public async Task<List<UfDto>> ConsultarUfs()
         {
-            var client = new RestClient(StringResources.UrlBaseIbge);
+            var client = new RestClient(_urlBaseIbge);
             var request = new RestRequest(StringResources.UrlUfIbge, Method.Get);
             var response = await client.ExecuteAsync(request);
 
@@ -40,7 +45,7 @@ namespace Loterias.Infra.Data.Rest.Ibge.Services
 
         public async Task<List<MunicipioDto>> ConsultarMunicipiosPorUf(int codigoIbgeUf)
         {
-            var client = new RestClient(StringResources.UrlBaseIbge);
+            var client = new RestClient(_urlBaseIbge);
             var request = new RestRequest(StringResources.FormatarResource(StringResources.UrlMunicipioIbge, codigoIbgeUf), Method.Get);
             var response = await client.ExecuteAsync(request);
 

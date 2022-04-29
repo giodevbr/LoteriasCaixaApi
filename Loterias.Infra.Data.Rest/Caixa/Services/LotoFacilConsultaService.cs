@@ -6,16 +6,21 @@ using Loterias.Infra.Data.Rest.Caixa.Enums;
 using Loterias.Infra.Data.Rest.Caixa.Interfaces;
 using Loterias.Core.Dtos;
 using Loterias.Util.Resources;
+using Microsoft.Extensions.Configuration;
 
 namespace Loterias.Infra.Data.Rest.Caixa.Services
 {
     public class LotoFacilConsultaService : ILotoFacilConsultaService
     {
         private readonly IDomainNotification _notificacaoDeDominio;
+        private readonly IConfiguration _configuration;
+        private readonly string _urlBasePortalDeLoteriasCaixa;
 
-        public LotoFacilConsultaService(IDomainNotification notificacaoDeDominio)
+        public LotoFacilConsultaService(IDomainNotification notificacaoDeDominio, IConfiguration configuration)
         {
             _notificacaoDeDominio = notificacaoDeDominio;
+            _configuration = configuration;
+            _urlBasePortalDeLoteriasCaixa = _configuration.GetSection("Apis:UrlBasePortalDeLoteriasCaixa").Value;
         }
 
         public async Task<List<LotoFacilDto>> Consultar()
@@ -49,9 +54,9 @@ namespace Loterias.Infra.Data.Rest.Caixa.Services
 
         private async Task<List<LotoFacilDto>> ConsultarCaixa()
         {
-            var client = new RestClient(StringResources.UrlBasePortalDeLoteriasCaixa);
+            var client = new RestClient(_urlBasePortalDeLoteriasCaixa);
 
-            var urlCompleta = StringResources.UrlBasePortalDeLoteriasCaixa + "?modalidade=Lotofacil";
+            var urlCompleta = _urlBasePortalDeLoteriasCaixa + "?modalidade=Lotofacil";
 
             var request = new RestRequest(urlCompleta, Method.Get);
             var response = await client.ExecuteAsync(request);
