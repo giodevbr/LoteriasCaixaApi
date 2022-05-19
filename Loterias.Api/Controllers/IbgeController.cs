@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Loterias.Core.Interfaces;
 using Loterias.Infra.Data.Rest.Ibge.Interfaces;
-using Loterias.Infra.Data.Model;
 
 namespace Loterias.Api.Controllers
 {
@@ -21,9 +20,6 @@ namespace Loterias.Api.Controllers
         public async Task<IActionResult> Consultar()
         {
             var retorno = await _ibgeConsultaService.ConsultarUfs();
-
-            //var test = new AppDbContext();
-            //var tst = test.Estado.ToList();
 
             if (_notificacaoDeDominio.HasNotifications())
                 return BadRequestResponse();
