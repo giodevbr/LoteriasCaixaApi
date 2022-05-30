@@ -18,7 +18,8 @@ namespace Loterias.Infra.Data.Model
             base.OnModelCreating(modelBuilder);
         }
 
-        public DbSet<Estado> Estado { get; set; }
+        public DbSet<Uf> Uf { get; set; }
         public DbSet<Municipio> Municipio { get; set; }
+        public DbSet<Usuario> Usuario { get; set; }
     }
 }

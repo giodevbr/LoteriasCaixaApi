@@ -5,14 +5,14 @@
         public int Id { get; set; }
         public int IbgeId { get; set; }
         public string Nome { get; set; }
-        public int EstadoId { get; set; }
-        public virtual Estado Estado { get; set; } 
+        public int UfId { get; set; }
+        public virtual Uf Uf { get; set; }
 
-        public Municipio(int ibgeId, string nome, int estadoId)
+        public Municipio(int ibgeId, string nome, int ufId)
         {
             IbgeId = ibgeId;
             Nome = nome;
-            EstadoId = estadoId;
+            UfId = ufId;
         }
     }
 }

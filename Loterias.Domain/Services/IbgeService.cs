@@ -14,12 +14,12 @@ namespace Loterias.Domain.Services
         private readonly IDomainNotification _notificacaoDeDominio;
         private readonly IIbgeConsultaService _ibgeConsultaService;
         private readonly IMunicipioRepository _municipioRepository;
-        private readonly IEstadoRepository _estadoRepository;
+        private readonly IUfRepository _estadoRepository;
 
         public IbgeService(IDomainNotification notificacaoDeDominio,
                            IIbgeConsultaService ibgeConsultaService,
                            IMunicipioRepository municipioRepository,
-                           IEstadoRepository estadoRepository)
+                           IUfRepository estadoRepository)
         {
             _notificacaoDeDominio = notificacaoDeDominio;
             _ibgeConsultaService = ibgeConsultaService;
@@ -74,11 +74,11 @@ namespace Loterias.Domain.Services
             }
         }
 
-        private static Estado InstanciarUf(UfDto ufDto)
+        private static Uf InstanciarUf(UfDto ufDto)
         {
             ufDto.Nome = ufDto.Nome.ToUpper();
 
-            return new Estado(ufDto.Id, ufDto.Nome, ufDto.Sigla);
+            return new Uf(ufDto.Id, ufDto.Nome, ufDto.Sigla);
         }
 
         private static Municipio InstanciarMunicipio(MunicipioDto municipioDto, int ufId)

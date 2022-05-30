@@ -36,5 +36,16 @@ namespace Loterias.Util.Resources
         public const string ExisteUfs = "Existem estados cadastrados, não é possível proceder com a carga.";
         public const string NaoExisteUfs = "Não existem estados cadastrados, não é possível proceder com a carga.";
         public const string ExisteMunicipios = "Existem munícipios cadastrados, não é possível proceder com a carga.";
+
+        public const string CamposNaoPreenchidos = "Por favor, preencha os campos obrigatórios.";
+        public const string NomeNaoInformado = "É obrigatório informar o nome.";
+        public const string EmailNaoInformado = "É obrigatório informar o e-mail.";
+        public const string SenhaNaoInformada = "É obrigatório informar a senha.";
+        
+        public const string EmailInvalido = "O e-mail informado é inválido.";
+        public const string SenhaInvalida = "A senha informada é inválida.";
+
+        public const string EmailVinculadoComOutroUsuario = "O e-mail informado está vinculado a outro usuário.";
+        public const string EmailOuSenhaInvalido = "O e-mail ou a senha informada é inválido.";
     }
 }

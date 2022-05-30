@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 
 namespace Loterias.Infra.Data.Repository.Repositories
 {
-    public class EstadoRepository : BaseRepository<Estado>, IEstadoRepository
+    public class UfRepository : BaseRepository<Uf>, IUfRepository
     {
-        public EstadoRepository(AppDbContext context) : base(context)
+        public UfRepository(AppDbContext context) : base(context)
         {
         }
     }

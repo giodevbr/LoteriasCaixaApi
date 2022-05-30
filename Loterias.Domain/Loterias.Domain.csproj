@@ -7,11 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Dtos\" />
-    <Folder Include="Interfaces\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\Loterias.Core\Loterias.Core.csproj" />
     <ProjectReference Include="..\Loterias.Infra.Data.Rest\Loterias.Infra.Data.Rest.csproj" />
     <ProjectReference Include="..\Loterias.Infra.Data\Loterias.Infra.Data.csproj" />
