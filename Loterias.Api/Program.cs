@@ -1,13 +1,15 @@
-using Microsoft.EntityFrameworkCore;
-using Loterias.Core.Services;
 using Loterias.Core.Interfaces;
+using Loterias.Core.Services;
+using Loterias.Domain.Interfaces;
+using Loterias.Domain.Services;
 using Loterias.Infra.Data.Model;
-using Loterias.Infra.Data.Rest.Ibge.Services;
+using Loterias.Infra.Data.Repository.Interfaces;
+using Loterias.Infra.Data.Repository.Repositories;
+using Loterias.Infra.Data.Rest.Caixa.Interfaces;
 using Loterias.Infra.Data.Rest.Caixa.Services;
 using Loterias.Infra.Data.Rest.Ibge.Interfaces;
-using Loterias.Infra.Data.Rest.Caixa.Interfaces;
-using Loterias.Infra.Data.Repository.Interfaces;
-using Loterias.Infra.Data.Repository.Services;
+using Loterias.Infra.Data.Rest.Ibge.Services;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
@@ -24,6 +26,9 @@ builder.Services.AddScoped<IDomainNotification, DomainNotification>();
 builder.Services.AddScoped<ILotoFacilConsultaService, LotoFacilConsultaService>();
 builder.Services.AddScoped<IIbgeConsultaService, IbgeConsultaService>();
 builder.Services.AddScoped<IBaseRepository<AppDbContext>, BaseRepository<AppDbContext>>();
+builder.Services.AddScoped<IIbgeService, IbgeService>();
+builder.Services.AddScoped<IMunicipioRepository, MunicipioRepository>();
+builder.Services.AddScoped<IEstadoRepository, EstadoRepository>();
 
 var app = builder.Build();
 

@@ -18,6 +18,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Loterias.Core\Loterias.Core.csproj" />
+    <ProjectReference Include="..\Loterias.Domain\Loterias.Domain.csproj" />
     <ProjectReference Include="..\Loterias.Infra.Data.Rest\Loterias.Infra.Data.Rest.csproj" />
     <ProjectReference Include="..\Loterias.Infra.Data\Loterias.Infra.Data.csproj" />
   </ItemGroup>

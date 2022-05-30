@@ -1,35 +1,33 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Loterias.Infra.Data.Repository.Interfaces
+﻿namespace Loterias.Infra.Data.Repository.Interfaces
 {
     public interface IBaseRepository <TEntity> where TEntity : class
     {
-        public TEntity? ObterPorId(int id);
+        TEntity? ObterPorId(int id);
 
-        public Task<TEntity?> ObterPorIdAsync(int id);
+        Task<TEntity?> ObterPorIdAsync(int id);
 
-        public IList<TEntity> ObterTodos();
+        IList<TEntity> ObterTodos();
 
-        public Task<IList<TEntity>> ObterTodosAsync();
+        Task<IList<TEntity>> ObterTodosAsync();
 
-        public TEntity Cadastrar(TEntity entidade);
+        bool Existe();
 
-        public Task<TEntity> CadastrarAsync(TEntity entidade);
+        Task<bool> ExisteAsync();
 
-        public void Atualizar(TEntity entidade);
+        TEntity Cadastrar(TEntity entidade);
 
-        public Task AtualizarAsync(TEntity entidade);
+        Task<TEntity> CadastrarAsync(TEntity entidade);
 
-        public void Deletar(TEntity entidade);
+        void Atualizar(TEntity entidade);
 
-        public Task DeletarAsync(TEntity entidade);
+        Task AtualizarAsync(TEntity entidade);
 
-        public void Dispose();
+        void Deletar(TEntity entidade);
 
-        public ValueTask DisposeAsync();
+        Task DeletarAsync(TEntity entidade);
+
+        void Dispose();
+
+        ValueTask DisposeAsync();
     }
 }

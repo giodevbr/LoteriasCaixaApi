@@ -2,7 +2,7 @@
 using Loterias.Infra.Data.Repository.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
-namespace Loterias.Infra.Data.Repository.Services
+namespace Loterias.Infra.Data.Repository.Repositories
 {
     public class BaseRepository<TEntity> : IDisposable, IAsyncDisposable, IBaseRepository<TEntity> where TEntity : class
     {
@@ -33,6 +33,16 @@ namespace Loterias.Infra.Data.Repository.Services
         public async Task<IList<TEntity>> ObterTodosAsync()
         {
             return await _dbContext.Set<TEntity>().ToListAsync();
+        }
+
+        public bool Existe()
+        {
+            return _dbContext.Set<TEntity>().Any();
+        }
+
+        public async Task<bool> ExisteAsync()
+        {
+            return await _dbContext.Set<TEntity>().AnyAsync();
         }
 
         public TEntity Cadastrar(TEntity entidade)

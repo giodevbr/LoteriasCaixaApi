@@ -32,5 +32,9 @@ namespace Loterias.Util.Resources
         public const string UrlUfIbge = "localidades/estados";
         public const string FalhaNaComunicacaoComApi = "Não foi possível estabelecer uma comunicação com a API do IBGE.";
         public const string CodigoIbgeDaUfInvalido = "O Código IBGE informado é inválido.";
+
+        public const string ExisteUfs = "Existem estados cadastrados, não é possível proceder com a carga.";
+        public const string NaoExisteUfs = "Não existem estados cadastrados, não é possível proceder com a carga.";
+        public const string ExisteMunicipios = "Existem munícipios cadastrados, não é possível proceder com a carga.";
     }
 }

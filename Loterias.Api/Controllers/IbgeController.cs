@@ -2,17 +2,22 @@
 using Microsoft.AspNetCore.Mvc;
 using Loterias.Core.Interfaces;
 using Loterias.Infra.Data.Rest.Ibge.Interfaces;
+using Loterias.Domain.Interfaces;
 
 namespace Loterias.Api.Controllers
 {
     public class IbgeController : BaseController
     {
         private readonly IIbgeConsultaService _ibgeConsultaService;
+        private readonly IIbgeService _ibgeService;
 
         public IbgeController(IDomainNotification notificacaoDeDominio,
-                              IIbgeConsultaService ibgeConsultaService) : base(notificacaoDeDominio)
+                              IIbgeConsultaService ibgeConsultaService,
+                              IIbgeService ibgeService)
+                             : base(notificacaoDeDominio)
         {
             _ibgeConsultaService = ibgeConsultaService;
+            _ibgeService = ibgeService;
         }
 
 
@@ -37,5 +42,28 @@ namespace Loterias.Api.Controllers
 
             return Ok(retorno);
         }
+
+        [HttpGet("ExecutarCargaDeUf")]
+        public async Task<IActionResult> ExecutarCargaDeUf()
+        {
+            await _ibgeService.ExecutarCargaDeUf();
+
+            if (_notificacaoDeDominio.HasNotifications())
+                return BadRequestResponse();
+
+            return Ok();
+        }
+
+        [HttpGet("ExecutarCargaDeMunicipio")]
+        public async Task<IActionResult> ExecutarCargaDeMunicipio()
+        {
+            await _ibgeService.ExecutarCargaDeMunicipio();
+
+            if (_notificacaoDeDominio.HasNotifications())
+                return BadRequestResponse();
+
+            return Ok();
+        }
+
     }
 }
