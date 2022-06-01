@@ -41,10 +41,10 @@ namespace Loterias.Util.Resources
         public const string NomeNaoInformado = "É obrigatório informar o nome.";
         public const string EmailNaoInformado = "É obrigatório informar o e-mail.";
         public const string SenhaNaoInformada = "É obrigatório informar a senha.";
-        
-        public const string EmailInvalido = "O e-mail informado é inválido.";
-        public const string SenhaInvalida = "A senha informada é inválida.";
 
+        public const string SenhaInvalida = "A senha informada é inválida.";
+        public const string EmailInvalido = "O e-mail informado é inválido.";
+        public const string EmailNaoCadastrado = "O e-mail informado não está cadastrado.";
         public const string EmailVinculadoComOutroUsuario = "O e-mail informado está vinculado a outro usuário.";
         public const string EmailOuSenhaInvalido = "O e-mail ou a senha informada é inválido.";
     }

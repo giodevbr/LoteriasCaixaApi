@@ -1,12 +1,11 @@
-﻿using RestSharp;
-using System.Net;
-using Newtonsoft.Json;
-using Loterias.Core.Dtos;
-using Loterias.Util.Resources;
-using Loterias.Core.Interfaces;
+﻿using Loterias.Core.Interfaces;
 using Loterias.Infra.Data.Rest.Ibge.Dtos;
 using Loterias.Infra.Data.Rest.Ibge.Interfaces;
+using Loterias.Util.Resources;
 using Microsoft.Extensions.Configuration;
+using Newtonsoft.Json;
+using RestSharp;
+using System.Net;
 
 namespace Loterias.Infra.Data.Rest.Ibge.Services
 {
@@ -30,7 +29,7 @@ namespace Loterias.Infra.Data.Rest.Ibge.Services
             var response = await client.ExecuteAsync(request);
 
             if (response.StatusCode != HttpStatusCode.OK)
-                _notificacaoDeDominio.AddNotification(new Notification(StringResources.FalhaNaComunicacaoComApi));
+                _notificacaoDeDominio.AddNotification(StringResources.FalhaNaComunicacaoComApi);
 
             if (_notificacaoDeDominio.HasNotifications() || response.Content == null)
                 return new List<UfDto>();
@@ -50,10 +49,10 @@ namespace Loterias.Infra.Data.Rest.Ibge.Services
             var response = await client.ExecuteAsync(request);
 
             if (response.StatusCode != HttpStatusCode.OK)
-                _notificacaoDeDominio.AddNotification(new Notification(StringResources.FalhaNaComunicacaoComApi));
+                _notificacaoDeDominio.AddNotification(StringResources.FalhaNaComunicacaoComApi);
 
             if (string.IsNullOrEmpty(response.Content) || response.Content == "[]" && !_notificacaoDeDominio.HasNotifications())
-                _notificacaoDeDominio.AddNotification(new Notification(StringResources.CodigoIbgeDaUfInvalido));
+                _notificacaoDeDominio.AddNotification(StringResources.CodigoIbgeDaUfInvalido);
 
             if (_notificacaoDeDominio.HasNotifications() || response.Content == null) 
                 return new List<MunicipioDto>();

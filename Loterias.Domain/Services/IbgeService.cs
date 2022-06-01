@@ -30,10 +30,10 @@ namespace Loterias.Domain.Services
         public async Task ExecutarCargaDeUf()
         {
             if (await ExisteRegistroDeUf())
-                _notificacaoDeDominio.AddNotification(new Notification(StringResources.ExisteUfs));
+                _notificacaoDeDominio.AddNotification(StringResources.ExisteUfs);
 
             if (await ExisteRegistroDeMunicipio())
-                _notificacaoDeDominio.AddNotification(new Notification(StringResources.ExisteMunicipios));
+                _notificacaoDeDominio.AddNotification(StringResources.ExisteMunicipios);
 
             if (!_notificacaoDeDominio.HasNotifications())
             {
@@ -43,7 +43,7 @@ namespace Loterias.Domain.Services
                 {
                     var novaUf = InstanciarUf(uf);
 
-                    await _estadoRepository.CadastrarAsync(novaUf);
+                    await _estadoRepository.AddAsync(novaUf);
                 }
             }
         }
@@ -51,14 +51,14 @@ namespace Loterias.Domain.Services
         public async Task ExecutarCargaDeMunicipio()
         {
             if (!await ExisteRegistroDeUf())
-                _notificacaoDeDominio.AddNotification(new Notification(StringResources.NaoExisteUfs));
+                _notificacaoDeDominio.AddNotification(StringResources.NaoExisteUfs);
 
             if (await ExisteRegistroDeMunicipio())
-                _notificacaoDeDominio.AddNotification(new Notification(StringResources.ExisteMunicipios));
+                _notificacaoDeDominio.AddNotification(StringResources.ExisteMunicipios);
 
             if (!_notificacaoDeDominio.HasNotifications())
             {
-                var ufs = await _estadoRepository.ObterTodosAsync();
+                var ufs = await _estadoRepository.GetAllAsync();
 
                 foreach (var uf in ufs)
                 {
@@ -68,7 +68,7 @@ namespace Loterias.Domain.Services
                     {
                         var novoMunicipio = InstanciarMunicipio(municipio, uf.Id);
 
-                        await _municipioRepository.CadastrarAsync(novoMunicipio);
+                        await _municipioRepository.AddAsync(novoMunicipio);
                     }
                 }
             }
@@ -90,12 +90,12 @@ namespace Loterias.Domain.Services
 
         private async Task<bool> ExisteRegistroDeUf()
         {
-            return await _estadoRepository.ExisteAsync();
+            return await _estadoRepository.AnyAsync();
         }
 
         private async Task<bool> ExisteRegistroDeMunicipio()
         {
-            return await _municipioRepository.ExisteAsync();
+            return await _municipioRepository.AnyAsync();
         }
     }
 }

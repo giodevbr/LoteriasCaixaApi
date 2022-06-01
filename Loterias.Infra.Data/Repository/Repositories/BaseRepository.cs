@@ -15,61 +15,60 @@ namespace Loterias.Infra.Data.Repository.Repositories
             _dbContext = context;
         }
 
-        public TEntity? ObterPorId(int id)
+        public TEntity? GetById(int id)
         {
             return _dbContext.Set<TEntity>().Find(id);
         }
 
-        public async Task<TEntity?> ObterPorIdAsync(int id)
+        public async Task<TEntity?> GetByIdAsync(int id)
         {
             return await _dbContext.Set<TEntity>().FindAsync(id);
         }
 
-        public IList<TEntity> ObterTodos()
+        public IList<TEntity> GetAll()
         {
             return _dbContext.Set<TEntity>().ToList();
         }
 
-        public async Task<IList<TEntity>> ObterTodosAsync()
+        public async Task<IList<TEntity>> GetAllAsync()
         {
             return await _dbContext.Set<TEntity>().ToListAsync();
         }
 
-        public bool Existe()
+        public bool Any()
         {
             return _dbContext.Set<TEntity>().Any();
         }
 
-        public async Task<bool> ExisteAsync()
+        public async Task<bool> AnyAsync()
         {
             return await _dbContext.Set<TEntity>().AnyAsync();
         }
 
-        public TEntity Cadastrar(TEntity entidade)
+        public TEntity Add(TEntity entidade)
         {
             var novaEntidade = _dbContext.Set<TEntity>().Add(entidade);
 
-            Salvar();
+            _dbContext.SaveChanges();
 
             return novaEntidade.Entity;
         }
 
-        public async Task<TEntity> CadastrarAsync(TEntity entidade)
+        public async Task<TEntity> AddAsync(TEntity entidade)
         {
             var novaEntidade = await _dbContext.Set<TEntity>().AddAsync(entidade);
 
-            await SalvarAsync();
+            await _dbContext.SaveChangesAsync();
 
             return novaEntidade.Entity;
         }
 
-        public void Atualizar(TEntity entidade)
+        public void Update(TEntity entidade)
         {
             try
             {
                 _dbContext.Set<TEntity>().Update(entidade);
-
-                Salvar();
+                _dbContext.SaveChanges();
             }
             catch (Exception)
             {
@@ -78,13 +77,13 @@ namespace Loterias.Infra.Data.Repository.Repositories
             }
         }
 
-        public async Task AtualizarAsync(TEntity entidade)
+        public async Task UpdateAsync(TEntity entidade)
         {
             try
             {
                 _dbContext.Set<TEntity>().Update(entidade);
 
-                await SalvarAsync();
+                await _dbContext.SaveChangesAsync();
             }
             catch (Exception)
             {
@@ -93,13 +92,12 @@ namespace Loterias.Infra.Data.Repository.Repositories
             }
         }
 
-        public void Deletar(TEntity entidade)
+        public void Delete(TEntity entidade)
         {
             try
             {
                 _dbContext.Set<TEntity>().Remove(entidade);
-
-                Salvar();
+                _dbContext.SaveChanges();
             }
             catch (Exception)
             {
@@ -108,29 +106,19 @@ namespace Loterias.Infra.Data.Repository.Repositories
             }
         }
 
-        public async Task DeletarAsync(TEntity entidade)
+        public async Task DeleteAsync(TEntity entidade)
         {
             try
             {
                 _dbContext.Set<TEntity>().Remove(entidade);
 
-                await SalvarAsync();
+                await _dbContext.SaveChangesAsync();
             }
             catch (Exception)
             {
                 await DisposeAsync();
                 throw;
             }
-        }
-
-        private void Salvar()
-        {
-            _dbContext.SaveChanges();
-        }
-
-        private async Task SalvarAsync()
-        {
-            await _dbContext.SaveChangesAsync();
         }
 
         public void Dispose()
@@ -140,7 +128,7 @@ namespace Loterias.Infra.Data.Repository.Repositories
 
             _dbContext.Dispose();
             _disposed = true;
-            
+
             GC.SuppressFinalize(this);
         }
 
@@ -150,6 +138,7 @@ namespace Loterias.Infra.Data.Repository.Repositories
                 return;
 
             await _dbContext.DisposeAsync();
+
             _disposed = true;
 
             GC.SuppressFinalize(this);

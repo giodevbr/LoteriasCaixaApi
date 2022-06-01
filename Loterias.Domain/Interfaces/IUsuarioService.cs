@@ -5,7 +5,5 @@ namespace Loterias.Domain.Interfaces
     public interface IUsuarioService
     {
         Task Cadastrar(UsuarioDto usuarioDto);
-
-        Task ValidarLogin(LoginDto loginDto);
     }
 }

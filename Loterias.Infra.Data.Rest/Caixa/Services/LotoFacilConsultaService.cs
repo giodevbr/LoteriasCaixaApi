@@ -102,7 +102,7 @@ namespace Loterias.Infra.Data.Rest.Caixa.Services
             }
             catch (Exception)
             {
-                _notificacaoDeDominio.AddNotification(new Notification(StringResources.ErroGenerico));
+                _notificacaoDeDominio.AddNotification(StringResources.ErroGenerico);
             }
 
             return listaLotoFacil;

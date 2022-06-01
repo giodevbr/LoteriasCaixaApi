@@ -2,29 +2,29 @@
 {
     public interface IBaseRepository <TEntity> where TEntity : class
     {
-        TEntity? ObterPorId(int id);
+        TEntity? GetById(int id);
 
-        Task<TEntity?> ObterPorIdAsync(int id);
+        Task<TEntity?> GetByIdAsync(int id);
 
-        IList<TEntity> ObterTodos();
+        IList<TEntity> GetAll();
 
-        Task<IList<TEntity>> ObterTodosAsync();
+        Task<IList<TEntity>> GetAllAsync();
 
-        bool Existe();
+        bool Any();
 
-        Task<bool> ExisteAsync();
+        Task<bool> AnyAsync();
 
-        TEntity Cadastrar(TEntity entidade);
+        TEntity Add(TEntity entidade);
 
-        Task<TEntity> CadastrarAsync(TEntity entidade);
+        Task<TEntity> AddAsync(TEntity entidade);
 
-        void Atualizar(TEntity entidade);
+        void Update(TEntity entidade);
 
-        Task AtualizarAsync(TEntity entidade);
+        Task UpdateAsync(TEntity entidade);
 
-        void Deletar(TEntity entidade);
+        void Delete(TEntity entidade);
 
-        Task DeletarAsync(TEntity entidade);
+        Task DeleteAsync(TEntity entidade);
 
         void Dispose();
 

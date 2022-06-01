@@ -1,8 +1,8 @@
 ﻿using Loterias.Api.Extensions;
-using Microsoft.AspNetCore.Mvc;
 using Loterias.Core.Interfaces;
-using Loterias.Infra.Data.Rest.Ibge.Interfaces;
 using Loterias.Domain.Interfaces;
+using Loterias.Infra.Data.Rest.Ibge.Interfaces;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Loterias.Api.Controllers
 {

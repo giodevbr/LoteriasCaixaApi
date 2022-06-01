@@ -13,18 +13,14 @@ namespace Loterias.Infra.Data.Repository.Repositories
             _context = context;
         }
 
-        public async Task<bool> ExisteOutroUsuarioComOMesmoEmail(string email)
-        {
-            email = email.Trim();
-
-            return await _context.Usuario.Where(x => x.Email == email).AnyAsync();
+        public async Task<Usuario?> ObterPorEmail(string email)
+        { 
+            return await _context.Usuario.Where(x => x.Email == email).FirstOrDefaultAsync();
         }
 
-        public async Task<Usuario?> ObterPorEmail(string email)
+        public async Task<bool> EmailEmUso(string email)
         {
-            email = email.Trim();
-
-            return await _context.Usuario.Where(x => x.Email == email).FirstOrDefaultAsync();
+            return await _context.Usuario.Where(x => x.Email == email).AnyAsync();
         }
     }
 }

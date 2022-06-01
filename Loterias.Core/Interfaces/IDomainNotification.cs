@@ -6,7 +6,6 @@ namespace Loterias.Core.Interfaces
     {
         public bool HasNotifications();
         public List<Notification> GetNotifications();
-        public void AddNotification(Notification notification);
-        public void AddNotifications(List<Notification> notifications);
+        public void AddNotification(string notification);
     }
 }

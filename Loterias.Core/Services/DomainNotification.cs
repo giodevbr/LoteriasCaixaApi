@@ -22,20 +22,22 @@ namespace Loterias.Core.Services
             return _notifications;
         }
 
-        public void AddNotification(Notification notification)
+        public void AddNotification(string notification)
+        {
+            if (string.IsNullOrEmpty(notification))
+                return;
+
+            var newNotification = new Notification(notification);
+
+            AddNotification(newNotification);
+        }
+
+        private void AddNotification(Notification notification)
         {
             if (notification == null)
                 return;
 
             _notifications.Add(notification);
-        }
-
-        public void AddNotifications(List<Notification> notifications)
-        {
-            if (notifications == null)
-                return;
-
-            _notifications.AddRange(notifications);
         }
     }
 }
