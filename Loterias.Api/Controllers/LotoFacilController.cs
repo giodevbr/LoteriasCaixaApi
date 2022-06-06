@@ -9,18 +9,18 @@ namespace Loterias.Api.Controllers
     [ApiController]
     public class LotoFacilController : BaseController
     {
-        private readonly ILotoFacilConsultaService _lotoFacilConsultaService;
+        private readonly ILotoFacilService _lotoFacilService;
 
         public LotoFacilController(IDomainNotification notificacaoDeDominio,
-                                   ILotoFacilConsultaService lotoFacilConsultaService) : base(notificacaoDeDominio)
+                                   ILotoFacilService lotoFacilService) : base(notificacaoDeDominio)
         {
-            _lotoFacilConsultaService = lotoFacilConsultaService;
+            _lotoFacilService = lotoFacilService;
         }
 
-        [HttpGet("Consultar")]
-        public async Task<IActionResult> Consultar()
+        [HttpGet("ConsultarPlanilhaTodos")]
+        public async Task<IActionResult> ConsultarPlanilhaTodos()
         {
-            var retorno = await _lotoFacilConsultaService.Consultar();
+            var retorno = await _lotoFacilService.ConsultarPlanilhaTodos();
 
             if (_notificacaoDeDominio.HasNotifications())
                 return BadRequestResponse();
@@ -28,32 +28,10 @@ namespace Loterias.Api.Controllers
             return Ok(retorno);
         }
 
-        [HttpGet("ConsultarUltimoConcurso")]
-        public async Task<IActionResult> ConsultarUltimoConcurso()
+        [HttpGet("ConsultarPlanilhaPorConcurso")]
+        public async Task<ActionResult> ConsultarPlanilhaPorConcurso(string concurso)
         {
-            var retorno = await _lotoFacilConsultaService.ConsultarUltimoConcurso();
-
-            if (_notificacaoDeDominio.HasNotifications())
-                return BadRequestResponse();
-
-            return Ok(retorno);
-        }
-
-        [HttpGet("ConsultarPorConcurso")]
-        public async Task<ActionResult> ConsultarPorConcurso(string concurso)
-        {
-            var retorno = await _lotoFacilConsultaService.ConsultarPorConcurso(concurso);
-
-            if (_notificacaoDeDominio.HasNotifications())
-                return BadRequestResponse();
-
-            return Ok(retorno);
-        }
-
-        [HttpGet("ConsultarPorDataDoSorteio")]
-        public async Task<IActionResult> ConsultarPorDataDoSorteio(DateTime dataDoSorteio)
-        {
-            var retorno = await _lotoFacilConsultaService.ConsultarPorDataDoSorteio(dataDoSorteio);
+            var retorno = await _lotoFacilService.ConsultarPlanilhaPorConcurso(concurso);
 
             if (_notificacaoDeDominio.HasNotifications())
                 return BadRequestResponse();

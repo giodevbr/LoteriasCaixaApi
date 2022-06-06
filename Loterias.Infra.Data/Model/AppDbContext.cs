@@ -37,5 +37,6 @@ namespace Loterias.Infra.Data.Model
         public DbSet<PremiacaoLocalidade> PremiacaoLocalidade { get; set; }
         public DbSet<Resultado> Resultado { get; set; }
         public DbSet<ResultadoNumeroSorteado> ResultadoNumeroSorteado { get; set; }
+        public DbSet<ConcursoDadosBruto> ConcursoDadosBruto { get; set; }
     }
 }

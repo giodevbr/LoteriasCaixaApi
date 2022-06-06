@@ -95,7 +95,7 @@ builder.Services.AddScoped<IMunicipioRepository, MunicipioRepository>();
 builder.Services.AddScoped<IUfRepository, UfRepository>();
 builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();
 
-builder.Services.AddScoped<ILotoFacilConsultaService, LotoFacilConsultaService>();
+builder.Services.AddScoped<ILotoFacilService, LotoFacilService>();
 builder.Services.AddScoped<IIbgeApiService, IbgeApiService>();
 builder.Services.AddScoped<IIbgeService, IbgeService>();
 builder.Services.AddScoped<IUsuarioService, UsuarioService>();

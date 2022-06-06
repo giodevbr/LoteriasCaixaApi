@@ -9,56 +9,39 @@ using System.Net;
 
 namespace Loterias.Infra.Data.Rest.Caixa.Services
 {
-    public class LotoFacilConsultaService : ILotoFacilConsultaService
+    public class LotoFacilService : ILotoFacilService
     {
         private readonly IDomainNotification _notificacaoDeDominio;
         private readonly IConfiguration _configuration;
-        private readonly string _urlBasePortalDeLoteriasCaixa;
+        private readonly string _urlPortalDeLoteriasLotofacil;
 
-        public LotoFacilConsultaService(IDomainNotification notificacaoDeDominio, 
+        public LotoFacilService(IDomainNotification notificacaoDeDominio, 
                                         IConfiguration configuration)
         {
             _notificacaoDeDominio = notificacaoDeDominio;
             _configuration = configuration;
-            _urlBasePortalDeLoteriasCaixa = _configuration.GetSection("Apis:UrlBasePortalDeLoteriasCaixa").Value;
+            _urlPortalDeLoteriasLotofacil = _configuration.GetSection("Apis:UrlPortalDeLoteriasLotofacil").Value;
         }
 
-        public async Task<List<LotoFacilDto>> Consultar()
+        public async Task<List<LotoFacilDto>> ConsultarPlanilhaTodos()
         {
-            return await ConsultarCaixa();
+            var retorno = await ConsultaPortaDeLoteriasLotofacil();
+
+            return retorno;
         }
 
-        public async Task<LotoFacilDto> ConsultarUltimoConcurso()
+        public async Task<LotoFacilDto> ConsultarPlanilhaPorConcurso(string concurso)
         {
-            var retornoCaixa = await ConsultarCaixa();
-            var concursoRetorno = retornoCaixa.Last();
-
-            return concursoRetorno;
-        }
-
-        public async Task<LotoFacilDto> ConsultarPorConcurso(string concurso)
-        {
-            var retorno = await ConsultarCaixa();
+            var retorno = await ConsultaPortaDeLoteriasLotofacil();
             var concursoRetorno = retorno.Where(c => c.Concurso == concurso).First();
 
             return concursoRetorno;
         }
 
-        public async Task<LotoFacilDto> ConsultarPorDataDoSorteio(DateTime dataDoSorteio)
+        private async Task<List<LotoFacilDto>> ConsultaPortaDeLoteriasLotofacil()
         {
-            var retorno = await ConsultarCaixa();
-            var concursoRetorno = retorno.Where(c => c.DataSorteio == dataDoSorteio).First();
-
-            return concursoRetorno;
-        }
-
-        private async Task<List<LotoFacilDto>> ConsultarCaixa()
-        {
-            var client = new RestClient(_urlBasePortalDeLoteriasCaixa);
-
-            var urlCompleta = _urlBasePortalDeLoteriasCaixa + "?modalidade=Lotofacil";
-
-            var request = new RestRequest(urlCompleta, Method.Get);
+            var client = new RestClient();
+            var request = new RestRequest(_urlPortalDeLoteriasLotofacil, Method.Get);
             var response = await client.ExecuteAsync(request);
 
             if (response.StatusCode != HttpStatusCode.OK ||

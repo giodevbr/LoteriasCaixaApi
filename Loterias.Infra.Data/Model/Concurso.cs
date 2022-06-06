@@ -8,6 +8,7 @@ namespace Loterias.Infra.Data.Model
         public string Codigo { get; set; }
         public TipoConcurso TipoConcurso { get; set; }
         public DateTime DataSorteio { get; set; }
+        public DateTime DataProximoConcurso { get; set; }
         public StatusConcurso StatusConcurso { get; set; }
         public Decimal ValorArrecadado { get; set; }
         public Decimal ValorAcumulado { get; set; }
@@ -16,5 +17,6 @@ namespace Loterias.Infra.Data.Model
         public virtual Resultado Resultado { get; set; }
         public virtual List<PremiacaoLocalidade> PremiacaoLocalidade { get; set; }
         public virtual ConcursoLocalidade ConcursoLocalidade { get; set; }
+        public string? Descricao { get; set; }
     }
 }
