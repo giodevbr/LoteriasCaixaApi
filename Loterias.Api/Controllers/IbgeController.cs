@@ -1,30 +1,28 @@
 ﻿using Loterias.Api.Extensions;
 using Loterias.Core.Interfaces;
-using Loterias.Domain.Interfaces;
 using Loterias.Infra.Data.Rest.Ibge.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Loterias.Api.Controllers
 {
+    [Route("api/[controller]")]
+    [ApiController]
     public class IbgeController : BaseController
     {
-        private readonly IIbgeConsultaService _ibgeConsultaService;
-        private readonly IIbgeService _ibgeService;
+        private readonly IIbgeApiService _ibgeApiService;
 
         public IbgeController(IDomainNotification notificacaoDeDominio,
-                              IIbgeConsultaService ibgeConsultaService,
-                              IIbgeService ibgeService)
+                              IIbgeApiService ibgeApiService)
                              : base(notificacaoDeDominio)
         {
-            _ibgeConsultaService = ibgeConsultaService;
-            _ibgeService = ibgeService;
+            _ibgeApiService = ibgeApiService;
         }
 
-
         [HttpGet("ConsultarUfs")]
-        public async Task<IActionResult> Consultar()
+        public async Task<IActionResult> ConsultarUfs()
         {
-            var retorno = await _ibgeConsultaService.ConsultarUfs();
+            var retorno = await _ibgeApiService.ConsultarUfs();
 
             if (_notificacaoDeDominio.HasNotifications())
                 return BadRequestResponse();
@@ -35,35 +33,12 @@ namespace Loterias.Api.Controllers
         [HttpGet("ConsultarMunicipiosPorUf")]
         public async Task<IActionResult> ConsultarMunicipiosPorUf(int codigoIbgeUf)
         {
-            var retorno = await _ibgeConsultaService.ConsultarMunicipiosPorUf(codigoIbgeUf);
+            var retorno = await _ibgeApiService.ConsultarMunicipiosPorUf(codigoIbgeUf);
 
             if (_notificacaoDeDominio.HasNotifications())
                 return BadRequestResponse();
 
             return Ok(retorno);
         }
-
-        [HttpGet("ExecutarCargaDeUf")]
-        public async Task<IActionResult> ExecutarCargaDeUf()
-        {
-            await _ibgeService.ExecutarCargaDeUf();
-
-            if (_notificacaoDeDominio.HasNotifications())
-                return BadRequestResponse();
-
-            return Ok();
-        }
-
-        [HttpGet("ExecutarCargaDeMunicipio")]
-        public async Task<IActionResult> ExecutarCargaDeMunicipio()
-        {
-            await _ibgeService.ExecutarCargaDeMunicipio();
-
-            if (_notificacaoDeDominio.HasNotifications())
-                return BadRequestResponse();
-
-            return Ok();
-        }
-
     }
 }

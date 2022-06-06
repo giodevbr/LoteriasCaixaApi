@@ -1,4 +1,4 @@
-﻿using Loterias.Infra.Data.Rest.Caixa.Enums;
+﻿using Loterias.Core.Enums;
 
 namespace Loterias.Infra.Data.Rest.Caixa.Dtos
 {
@@ -34,7 +34,7 @@ namespace Loterias.Infra.Data.Rest.Caixa.Dtos
 
         public string Concurso { get; set; }
         public DateTime DataSorteio { get; set; }
-        public StatusDoConcurso StatusDoConcurso { get; set; }
+        public StatusConcurso StatusConcurso { get; set; }
         public List<int> Resultado { get; set; }
         public List<LotoFacilMunicipioDto> Municipio { get; set; }
         public int QuantidadeGanhadoresQuinzePontos { get; set; }

@@ -9,13 +9,13 @@ using System.Net;
 
 namespace Loterias.Infra.Data.Rest.Ibge.Services
 {
-    public class IbgeConsultaService : IIbgeConsultaService
+    public class IbgeApiService : IIbgeApiService
     {
         private readonly IDomainNotification _notificacaoDeDominio;
         private readonly IConfiguration _configuration;
         private readonly string _urlBaseIbge;
 
-        public IbgeConsultaService(IDomainNotification notificacaoDeDominio, IConfiguration configuration)
+        public IbgeApiService(IDomainNotification notificacaoDeDominio, IConfiguration configuration)
         {
             _notificacaoDeDominio = notificacaoDeDominio;
             _configuration = configuration;

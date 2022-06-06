@@ -2,10 +2,13 @@
 using Loterias.Core.Interfaces;
 using Loterias.Domain.Dtos;
 using Loterias.Domain.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Loterias.Api.Controllers
 {
+    [Route("api/[controller]")]
+    [ApiController]
     public class UsuarioController : BaseController
     {
         private readonly IUsuarioService _usuarioService;

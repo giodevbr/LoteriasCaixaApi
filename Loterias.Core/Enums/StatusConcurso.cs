@@ -1,6 +1,6 @@
-﻿namespace Loterias.Infra.Data.Rest.Caixa.Enums
+﻿namespace Loterias.Core.Enums
 {
-    public enum StatusDoConcurso
+    public enum StatusConcurso
     {
         Pendente = 0,
         Pago = 1,

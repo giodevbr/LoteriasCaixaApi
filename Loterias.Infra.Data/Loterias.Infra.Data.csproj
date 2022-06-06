@@ -24,4 +24,8 @@
     <Folder Include="Migrations\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Loterias.Core\Loterias.Core.csproj" />
+  </ItemGroup>
+
 </Project>

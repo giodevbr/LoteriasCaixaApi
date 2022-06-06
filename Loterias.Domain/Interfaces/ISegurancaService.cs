@@ -3,7 +3,7 @@ using Loterias.Infra.Data.Model;
 
 namespace Loterias.Domain.Interfaces
 {
-    public interface ILoginService
+    public interface ISegurancaService
     {
         Task<Usuario?> Login(LoginDto loginDto);
 

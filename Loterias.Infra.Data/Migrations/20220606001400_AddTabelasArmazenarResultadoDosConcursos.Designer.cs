@@ -4,6 +4,7 @@ using Loterias.Infra.Data.Model;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Loterias.Infra.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220606001400_AddTabelasArmazenarResultadoDosConcursos")]
+    partial class AddTabelasArmazenarResultadoDosConcursos
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -37,7 +39,7 @@ namespace Loterias.Infra.Data.Migrations
                     b.Property<DateTime>("DataSorteio")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("StatusConcurso")
+                    b.Property<int>("StatusDoConcurso")
                         .HasColumnType("int");
 
                     b.Property<int>("TipoConcurso")

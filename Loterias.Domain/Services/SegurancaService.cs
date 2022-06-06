@@ -15,15 +15,15 @@ using System.Text;
 
 namespace Loterias.Domain.Services
 {
-    public class LoginService : ILoginService
+    public class SegurancaService : ISegurancaService
     {
         private readonly IDomainNotification _notificacaoDeDominio;
         private readonly IUsuarioRepository _usuarioRepository;
         private readonly IConfiguration _configuration;
 
-        public LoginService(IDomainNotification domainNotification,
-                            IUsuarioRepository usuarioRepository,
-                            IConfiguration configuration)
+        public SegurancaService(IDomainNotification domainNotification,
+                                IUsuarioRepository usuarioRepository,
+                                IConfiguration configuration)
         {
             _notificacaoDeDominio = domainNotification;
             _usuarioRepository = usuarioRepository;
@@ -119,11 +119,11 @@ namespace Loterias.Domain.Services
                 _notificacaoDeDominio.AddNotification(StringResources.SenhaNaoInformada);
         }
 
-        private static bool ValidarSenha(string senhaCorretaBase64, string senhaInformada)
+        protected static bool ValidarSenha(string senhaCriptografada, string senhaInformada)
         {
-            var senhaCorretaString = Base64.ToString(senhaCorretaBase64);
+            var senhaCorreta = Base64.ToString(senhaCriptografada);
 
-            if (senhaCorretaString != senhaInformada)
+            if (senhaCorreta != senhaInformada)
                 return false;
 
             return true;

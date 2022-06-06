@@ -12,18 +12,65 @@ using Loterias.Infra.Data.Rest.Ibge.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
 
 var connectionString = builder.Configuration.GetConnectionString("LoteriasConnection");
 
 builder.Services.AddDbContext<AppDbContext>(
                  options => options.UseSqlServer(connectionString,
                  sqlServerOptions => sqlServerOptions.MigrationsAssembly("Loterias.Infra.Data")));
+
+builder.Services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc("v1", new OpenApiInfo
+    {
+        Title = "LoteriasApi",
+        Version = "v1",
+        Description = "Loterias API Swagger",
+        Contact = new OpenApiContact
+        {
+            Name = "GioDev - Consultoria e Desenvolvimento Web",
+            Email = "giodev@gmail.com",
+            Url = new Uri("https://www.linkedin.com/in/giobatistadev/")
+        },
+    });
+
+    c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
+    {
+        Name = "Authorization",
+        Type = SecuritySchemeType.ApiKey,
+        Scheme = "Bearer",
+        BearerFormat = "JWT",
+        In = ParameterLocation.Header,
+        Description = "JWT Authorization header using the Bearer scheme (Example: 'Bearer 12345abcdef')",
+    });
+
+    c.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+               Reference = new OpenApiReference
+               {
+                   Type = ReferenceType.SecurityScheme,
+                   Id = "Bearer"
+               }
+            },
+            Array.Empty<string>()
+        }
+    });
+});
+
+builder.Services.AddCors(policy => 
+                         policy.AddPolicy("Security", builder => 
+                                                      builder.AllowAnyOrigin()
+                                                             .AllowAnyMethod()
+                                                             .AllowAnyHeader()));                                                               
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options =>
@@ -49,10 +96,10 @@ builder.Services.AddScoped<IUfRepository, UfRepository>();
 builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();
 
 builder.Services.AddScoped<ILotoFacilConsultaService, LotoFacilConsultaService>();
-builder.Services.AddScoped<IIbgeConsultaService, IbgeConsultaService>();
+builder.Services.AddScoped<IIbgeApiService, IbgeApiService>();
 builder.Services.AddScoped<IIbgeService, IbgeService>();
 builder.Services.AddScoped<IUsuarioService, UsuarioService>();
-builder.Services.AddScoped<ILoginService, LoginService>();
+builder.Services.AddScoped<ISegurancaService, SegurancaService>();
 
 var app = builder.Build();
 

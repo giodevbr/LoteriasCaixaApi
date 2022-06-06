@@ -12,12 +12,12 @@ namespace Loterias.Domain.Services
     public class IbgeService : IIbgeService
     {
         private readonly IDomainNotification _notificacaoDeDominio;
-        private readonly IIbgeConsultaService _ibgeConsultaService;
+        private readonly IIbgeApiService _ibgeConsultaService;
         private readonly IMunicipioRepository _municipioRepository;
         private readonly IUfRepository _estadoRepository;
 
         public IbgeService(IDomainNotification notificacaoDeDominio,
-                           IIbgeConsultaService ibgeConsultaService,
+                           IIbgeApiService ibgeConsultaService,
                            IMunicipioRepository municipioRepository,
                            IUfRepository estadoRepository)
         {

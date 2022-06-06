@@ -1,12 +1,11 @@
-﻿using RestSharp;
-using System.Net;
+﻿using Loterias.Core.Enums;
 using Loterias.Core.Interfaces;
 using Loterias.Infra.Data.Rest.Caixa.Dtos;
-using Loterias.Infra.Data.Rest.Caixa.Enums;
 using Loterias.Infra.Data.Rest.Caixa.Interfaces;
-using Loterias.Core.Dtos;
 using Loterias.Util.Resources;
 using Microsoft.Extensions.Configuration;
+using RestSharp;
+using System.Net;
 
 namespace Loterias.Infra.Data.Rest.Caixa.Services
 {
@@ -16,7 +15,8 @@ namespace Loterias.Infra.Data.Rest.Caixa.Services
         private readonly IConfiguration _configuration;
         private readonly string _urlBasePortalDeLoteriasCaixa;
 
-        public LotoFacilConsultaService(IDomainNotification notificacaoDeDominio, IConfiguration configuration)
+        public LotoFacilConsultaService(IDomainNotification notificacaoDeDominio, 
+                                        IConfiguration configuration)
         {
             _notificacaoDeDominio = notificacaoDeDominio;
             _configuration = configuration;
@@ -94,7 +94,7 @@ namespace Loterias.Infra.Data.Rest.Caixa.Services
                     PreencherValoresPagos(lotofacilDto, colunasCaixa, totalDeColunas);
                     PreencherStatus(lotofacilDto);
 
-                    if (lotofacilDto.StatusDoConcurso == StatusDoConcurso.Pago)
+                    if (lotofacilDto.StatusConcurso == StatusConcurso.Pago)
                         PreencherCidades(lotofacilDto, colunasCaixa);
 
                     listaLotoFacil.Add(lotofacilDto);
@@ -229,7 +229,7 @@ namespace Loterias.Infra.Data.Rest.Caixa.Services
 
         private static void PreencherStatus(LotoFacilDto lotoFacilDto)
         {
-            lotoFacilDto.StatusDoConcurso = lotoFacilDto.QuantidadeGanhadoresQuinzePontos > 0 ? StatusDoConcurso.Pago : StatusDoConcurso.Acumulado;
+            lotoFacilDto.StatusConcurso = lotoFacilDto.QuantidadeGanhadoresQuinzePontos > 0 ? StatusConcurso.Pago : StatusConcurso.Acumulado;
         }
     }
 }
