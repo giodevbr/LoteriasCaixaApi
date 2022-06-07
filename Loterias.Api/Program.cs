@@ -100,6 +100,7 @@ builder.Services.AddScoped<IIbgeApiService, IbgeApiService>();
 builder.Services.AddScoped<IIbgeService, IbgeService>();
 builder.Services.AddScoped<IUsuarioService, UsuarioService>();
 builder.Services.AddScoped<ISegurancaService, SegurancaService>();
+builder.Services.AddScoped<IUltimosResultadosService, UltimosResultadosService>();
 
 var app = builder.Build();
 
