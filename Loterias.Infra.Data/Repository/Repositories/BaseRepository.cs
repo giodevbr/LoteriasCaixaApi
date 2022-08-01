@@ -130,6 +130,7 @@ namespace Loterias.Infra.Data.Repository.Repositories
             _disposed = true;
 
             GC.SuppressFinalize(this);
+            GC.Collect();
         }
 
         public async ValueTask DisposeAsync()
@@ -142,6 +143,7 @@ namespace Loterias.Infra.Data.Repository.Repositories
             _disposed = true;
 
             GC.SuppressFinalize(this);
+            GC.Collect();
         }
     }
 }
