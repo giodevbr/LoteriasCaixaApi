@@ -1,54 +1,103 @@
-﻿using Loterias.Core.Enums;
+﻿using Newtonsoft.Json;
 
 namespace Loterias.Infra.Data.Rest.Caixa.Dtos
 {
-    public class LotoFacilDto
+    public class LotofacilDto
     {
-        public LotoFacilDto()
-        {
-            Resultado = new List<int>();
-            Municipio = new List<LotoFacilMunicipioDto>();
-        }
+        [JsonProperty("acumulado")]
+        public bool? Acumulado { get; set; }
 
-        public LotoFacilDto(string concurso, DateTime dataSorteio, List<int> resultado, List<LotoFacilMunicipioDto> municipio,
-            int quantidadeGanhadoresQuinzePontos, decimal valorPagoQuinzePontos, int quantidadeGanhadoresQuatorzePontos,
-            decimal valorPagoQuatorzePontos, int quantidadeGanhadoresTrezePontos, decimal valorPagoTrezePontos, int quantidadeGanhadoresOnzePontos,
-            decimal valorPagoOnzePontos, decimal valorArrecadado, decimal valorAcumulado, decimal valorSorteado)
-        {
-            Concurso = concurso;
-            DataSorteio = dataSorteio;
-            Resultado = resultado;
-            Municipio = municipio;
-            QuantidadeGanhadoresQuinzePontos = quantidadeGanhadoresQuinzePontos;
-            ValorPagoQuinzePontos = valorPagoQuinzePontos;
-            QuantidadeGanhadoresQuatorzePontos = quantidadeGanhadoresQuatorzePontos;
-            ValorPagoQuatorzePontos = valorPagoQuatorzePontos;
-            QuantidadeGanhadoresTrezePontos = quantidadeGanhadoresTrezePontos;
-            ValorPagoTrezePontos = valorPagoTrezePontos;
-            QuantidadeGanhadoresOnzePontos = quantidadeGanhadoresOnzePontos;
-            ValorPagoOnzePontos = valorPagoOnzePontos;
-            ValorArrecadado = valorArrecadado;
-            ValorAcumulado = valorAcumulado;
-            ValorSorteado = valorSorteado;
-        }
+        [JsonProperty("dataApuracao")]
+        public DateTime DataApuracao { get; set; }
 
-        public string Concurso { get; set; }
-        public DateTime DataSorteio { get; set; }
-        public StatusConcurso StatusConcurso { get; set; }
-        public List<int> Resultado { get; set; }
-        public List<LotoFacilMunicipioDto> Municipio { get; set; }
-        public int QuantidadeGanhadoresQuinzePontos { get; set; }
-        public Decimal ValorPagoQuinzePontos { get; set; }
-        public int QuantidadeGanhadoresQuatorzePontos { get; set; }
-        public Decimal ValorPagoQuatorzePontos { get; set; }
-        public int QuantidadeGanhadoresTrezePontos { get; set; }
-        public Decimal ValorPagoTrezePontos { get; set; }
-        public int QuantidadeGanhadoresOnzePontos { get; set; }
-        public Decimal ValorPagoOnzePontos { get; set; }
-        public int QuantidadeGanhadoresDozePontos { get; set; }
-        public Decimal ValorPagoDozePontos { get; set; }
-        public Decimal ValorArrecadado { get; set; }
-        public Decimal ValorAcumulado { get; set; }
-        public Decimal ValorSorteado { get; set; }
+        [JsonProperty("dataProximoConcurso")]
+        public DateTime DataProximoConcurso { get; set; }
+
+        [JsonProperty("dezenasSorteadasOrdemSorteio")]
+        public List<string> DezenasSorteadasOrdemSorteio { get; set; }
+
+        [JsonProperty("exibirDetalhamentoPorCidade")]
+        public bool? ExibirDetalhamentoPorCidade { get; set; }
+
+        [JsonProperty("id")]
+        public int? Id { get; set; }
+
+        [JsonProperty("indicadorConcursoEspecial")]
+        public int? IndicadorConcursoEspecial { get; set; }
+
+        [JsonProperty("listaDezenas")]
+        public List<string> ListaDezenas { get; set; }
+
+        [JsonProperty("listaDezenasSegundoSorteio")]
+        public object? ListaDezenasSegundoSorteio { get; set; }
+
+        [JsonProperty("listaMunicipioUFGanhadores")]
+        public List<ListaMunicipioUfGanhadoresDto> ListaMunicipioUFGanhadores { get; set; }
+
+        [JsonProperty("listaRateioPremio")]
+        public List<ListaRateioPremioDto> ListaRateioPremio { get; set; }
+
+        [JsonProperty("listaResultadoEquipeEsportiva")]
+        public object? ListaResultadoEquipeEsportiva { get; set; }
+
+        [JsonProperty("localSorteio")]
+        public string? LocalSorteio { get; set; }
+
+        [JsonProperty("nomeMunicipioUFSorteio")]
+        public string? NomeMunicipioUFSorteio { get; set; }
+
+        [JsonProperty("nomeTimeCoracaoMesSorte")]
+        public string? NomeTimeCoracaoMesSorte { get; set; }
+
+        [JsonProperty("numero")]
+        public int? Numero { get; set; }
+
+        [JsonProperty("numeroConcursoAnterior")]
+        public int? NumeroConcursoAnterior { get; set; }
+
+        [JsonProperty("numeroConcursoFinal_0_5")]
+        public int? NumeroConcursoFinal05 { get; set; }
+
+        [JsonProperty("numeroConcursoProximo")]
+        public int? NumeroConcursoProximo { get; set; }
+
+        [JsonProperty("numeroJogo")]
+        public int? NumeroJogo { get; set; }
+
+        [JsonProperty("observacao")]
+        public string? Observacao { get; set; }
+
+        [JsonProperty("premiacaoContingencia")]
+        public object? PremiacaoContingencia { get; set; }
+
+        [JsonProperty("tipoJogo")]
+        public string? TipoJogo { get; set; }
+
+        [JsonProperty("tipoPublicacao")]
+        public int? TipoPublicacao { get; set; }
+
+        [JsonProperty("ultimoConcurso")]
+        public bool? UltimoConcurso { get; set; }
+
+        [JsonProperty("valorArrecadado")]
+        public double? ValorArrecadado { get; set; }
+
+        [JsonProperty("valorAcumuladoConcurso_0_5")]
+        public double? ValorAcumuladoConcurso05 { get; set; }
+
+        [JsonProperty("valorAcumuladoConcursoEspecial")]
+        public double? ValorAcumuladoConcursoEspecial { get; set; }
+
+        [JsonProperty("valorAcumuladoProximoConcurso")]
+        public double? ValorAcumuladoProximoConcurso { get; set; }
+
+        [JsonProperty("valorEstimadoProximoConcurso")]
+        public double? ValorEstimadoProximoConcurso { get; set; }
+
+        [JsonProperty("valorSaldoReservaGarantidora")]
+        public double? ValorSaldoReservaGarantidora { get; set; }
+
+        [JsonProperty("valorTotalPremioFaixaUm")]
+        public double? ValorTotalPremioFaixaUm { get; set; }
     }
 }

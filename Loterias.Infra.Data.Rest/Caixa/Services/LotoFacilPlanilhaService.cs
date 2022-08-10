@@ -9,13 +9,13 @@ using System.Net;
 
 namespace Loterias.Infra.Data.Rest.Caixa.Services
 {
-    public class LotoFacilService : ILotoFacilService
+    public class LotoFacilPlanilhaService : ILotoFacilPlanilhaService
     {
         private readonly IDomainNotification _notificacaoDeDominio;
         private readonly IConfiguration _configuration;
         private readonly string _urlPortalDeLoteriasLotofacil;
 
-        public LotoFacilService(IDomainNotification notificacaoDeDominio, 
+        public LotoFacilPlanilhaService(IDomainNotification notificacaoDeDominio, 
                                         IConfiguration configuration)
         {
             _notificacaoDeDominio = notificacaoDeDominio;
@@ -23,14 +23,14 @@ namespace Loterias.Infra.Data.Rest.Caixa.Services
             _urlPortalDeLoteriasLotofacil = _configuration.GetSection("Apis:UrlPortalDeLoteriasLotofacil").Value;
         }
 
-        public async Task<List<LotoFacilDto>> ConsultarPlanilhaTodos()
+        public async Task<List<LotoFacilPlanilhaDto>> ConsultarPlanilhaTodos()
         {
             var retorno = await ConsultaPortaDeLoteriasLotofacil();
 
             return retorno;
         }
 
-        public async Task<LotoFacilDto> ConsultarPlanilhaPorConcurso(string concurso)
+        public async Task<LotoFacilPlanilhaDto> ConsultarPlanilhaPorConcurso(string concurso)
         {
             var retorno = await ConsultaPortaDeLoteriasLotofacil();
             var concursoRetorno = retorno.Where(c => c.Concurso == concurso).First();
@@ -38,7 +38,7 @@ namespace Loterias.Infra.Data.Rest.Caixa.Services
             return concursoRetorno;
         }
 
-        private async Task<List<LotoFacilDto>> ConsultaPortaDeLoteriasLotofacil()
+        private async Task<List<LotoFacilPlanilhaDto>> ConsultaPortaDeLoteriasLotofacil()
         {
             var client = new RestClient();
             var request = new RestRequest(_urlPortalDeLoteriasLotofacil, Method.Get);
@@ -47,16 +47,16 @@ namespace Loterias.Infra.Data.Rest.Caixa.Services
             if (response.StatusCode != HttpStatusCode.OK ||
                 response.Content == string.Empty ||
                 response.Content == null)
-                return new List<LotoFacilDto>();
+                return new List<LotoFacilPlanilhaDto>();
 
             var retorno = TratarRetorno(response.Content);
 
             return retorno;
         }
 
-        private List<LotoFacilDto> TratarRetorno(string retorno)
+        private List<LotoFacilPlanilhaDto> TratarRetorno(string retorno)
         {
-            var listaLotoFacil = new List<LotoFacilDto>();
+            var listaLotoFacil = new List<LotoFacilPlanilhaDto>();
 
             try
             {
@@ -64,7 +64,7 @@ namespace Loterias.Infra.Data.Rest.Caixa.Services
 
                 foreach (var linha in tabelaCaixa)
                 {
-                    var lotofacilDto = new LotoFacilDto();
+                    var lotofacilDto = new LotoFacilPlanilhaDto();
                     
                     var colunasCaixa = TransformarLinhaHtmlEmArray(linha);
                     colunasCaixa = RemoverTagsHtmlDasColunas(colunasCaixa);
@@ -128,7 +128,7 @@ namespace Loterias.Infra.Data.Rest.Caixa.Services
             return colunasCaixa;
         } 
 
-        private static void PreencherInformacoesDoSorteio(LotoFacilDto lotoFacilDto, string[] colunasCaixa, int totalDeColunas)
+        private static void PreencherInformacoesDoSorteio(LotoFacilPlanilhaDto lotoFacilDto, string[] colunasCaixa, int totalDeColunas)
         {
             lotoFacilDto.Concurso = colunasCaixa[0];
             lotoFacilDto.DataSorteio = Convert.ToDateTime(colunasCaixa[1]);
@@ -137,7 +137,7 @@ namespace Loterias.Infra.Data.Rest.Caixa.Services
             lotoFacilDto.ValorAcumulado = Convert.ToDecimal(colunasCaixa[totalDeColunas - 3]);
         }
 
-        private static void PreencherValoresPagos(LotoFacilDto lotoFacilDto, string[] colunasCaixa, int totalDeColunas)
+        private static void PreencherValoresPagos(LotoFacilPlanilhaDto lotoFacilDto, string[] colunasCaixa, int totalDeColunas)
         {
             lotoFacilDto.ValorPagoOnzePontos = Convert.ToDecimal(colunasCaixa[totalDeColunas - 4]);
             lotoFacilDto.ValorPagoDozePontos = Convert.ToDecimal(colunasCaixa[totalDeColunas - 5]);
@@ -146,7 +146,7 @@ namespace Loterias.Infra.Data.Rest.Caixa.Services
             lotoFacilDto.ValorPagoQuinzePontos = Convert.ToDecimal(colunasCaixa[totalDeColunas - 8]);
         }
 
-        private static void PreencherGanhadores(LotoFacilDto lotoFacilDto, string[] colunasCaixa, int totalDeColunas)
+        private static void PreencherGanhadores(LotoFacilPlanilhaDto lotoFacilDto, string[] colunasCaixa, int totalDeColunas)
         {
             lotoFacilDto.QuantidadeGanhadoresOnzePontos = Convert.ToInt32(colunasCaixa[totalDeColunas - 9]);
             lotoFacilDto.QuantidadeGanhadoresDozePontos = Convert.ToInt32(colunasCaixa[totalDeColunas - 10]);
@@ -155,7 +155,7 @@ namespace Loterias.Infra.Data.Rest.Caixa.Services
             lotoFacilDto.QuantidadeGanhadoresQuinzePontos = Convert.ToInt32(colunasCaixa[18]);
         }
 
-        private static void PreencherResultados(LotoFacilDto lotoFacilDto, string[] colunasCaixa)
+        private static void PreencherResultados(LotoFacilPlanilhaDto lotoFacilDto, string[] colunasCaixa)
         {
             for (int i = 2; i < 17; i++)
             {
@@ -163,7 +163,7 @@ namespace Loterias.Infra.Data.Rest.Caixa.Services
             }
         }
 
-        private static void PreencherCidades(LotoFacilDto lotoFacilDto, string[] colunasCaixa)
+        private static void PreencherCidades(LotoFacilPlanilhaDto lotoFacilDto, string[] colunasCaixa)
         {
             var ufs = new List<string>();
             var municipios = new List<string>();
@@ -210,7 +210,7 @@ namespace Loterias.Infra.Data.Rest.Caixa.Services
             }
         }
 
-        private static void PreencherStatus(LotoFacilDto lotoFacilDto)
+        private static void PreencherStatus(LotoFacilPlanilhaDto lotoFacilDto)
         {
             lotoFacilDto.StatusConcurso = lotoFacilDto.QuantidadeGanhadoresQuinzePontos > 0 ? StatusConcurso.Pago : StatusConcurso.Acumulado;
         }

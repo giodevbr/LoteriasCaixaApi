@@ -9,12 +9,15 @@ namespace Loterias.Api.Controllers
     [ApiController]
     public class LotoFacilController : BaseController
     {
-        private readonly ILotoFacilService _lotoFacilService;
+        private readonly ILotoFacilPlanilhaService _lotoFacilService;
+        private readonly ILotoFacilCaixaApiService _lotoFacilCaixaApiService;
 
         public LotoFacilController(IDomainNotification notificacaoDeDominio,
-                                   ILotoFacilService lotoFacilService) : base(notificacaoDeDominio)
+                                   ILotoFacilPlanilhaService lotoFacilService,
+                                   ILotoFacilCaixaApiService lotoFacilCaixaApiService) : base(notificacaoDeDominio)
         {
             _lotoFacilService = lotoFacilService;
+            _lotoFacilCaixaApiService = lotoFacilCaixaApiService;
         }
 
         [HttpGet("ConsultarPlanilhaTodos")]
@@ -32,6 +35,17 @@ namespace Loterias.Api.Controllers
         public async Task<ActionResult> ConsultarPlanilhaPorConcurso(string concurso)
         {
             var retorno = await _lotoFacilService.ConsultarPlanilhaPorConcurso(concurso);
+
+            if (_notificacaoDeDominio.HasNotifications())
+                return BadRequestResponse();
+
+            return Ok(retorno);
+        }
+
+        [HttpGet("ObterResultadoPorConcurso")]
+        public async Task<ActionResult> ObterResultadoPorConcurso(string concurso)
+        {
+            var retorno = await _lotoFacilCaixaApiService.ObterResultadoPorConcurso(concurso);
 
             if (_notificacaoDeDominio.HasNotifications())
                 return BadRequestResponse();

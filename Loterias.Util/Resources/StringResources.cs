@@ -21,6 +21,8 @@ namespace Loterias.Util.Resources
             return FormatarResource(principal, args.Select(x => x.ToLower()).ToArray());
         }
 
+        public const string Lotofacil = "lotofacil";
+
         public const string ErroGenerico = "Não foi possível concluir a exportação dos dados da API da Caixa.";
         public const string MunicipioNaoInformado = "NÃO INFORMADO";
         public const string UfNaoInformado = "NI";
